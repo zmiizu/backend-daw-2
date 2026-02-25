@@ -1,0 +1,47 @@
+services:
+  # ── PostgreSQL ───────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: hexauth_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hexauth
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  # ── Aplicación Node.js ───────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      target: development
+    container_name: hexauth_app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      PORT: 4000
+      APP_URL: http://localhost:4000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/hexauth?schema=public
+      JWT_ACCESS_SECRET: dev_access_secret_cambiame_en_produccion
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: >
+      sh -c "npx prisma db push --accept-data-loss && npm run dev"
+
+volumes:
+  postgres_data:
