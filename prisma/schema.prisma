@@ -22,11 +22,19 @@ model User {
   emailVerificationTokenExpiresAt DateTime?
   createdAt                       DateTime  @default(now())
   updatedAt                       DateTime  @updatedAt
+  products                        Product[]
 
   @@map("users")
 }
 
-model Product{
-  
-}
+model Product {
+  id         String    @id @default(uuid())
+  movieId    Int       
+  userId     String
+  movieTitle String
+  rentedAt   DateTime  @default(now())
+  returnedAt DateTime?
+  user       User      @relation(fields: [userId], references: [id])
 
+  @@map("products")
+}
