@@ -11,7 +11,7 @@ async function autoReturn () {
   for (const rental of activos) {
     const expiry = new Date(rental.rentedAt).getTime() + rental.dias * 24 * 60 * 60 * 1000
     if (expiry <= now) {
-      rental.return()
+      rental.markAsReturned()
       await productRepo.update(rental)
       const user = await userRepo.findById(rental.userId)
       if (user) {

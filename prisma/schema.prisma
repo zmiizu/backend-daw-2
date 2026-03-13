@@ -32,6 +32,7 @@ model Product {
   movieId    Int       
   userId     String
   movieTitle String
+  dias       Int
   rentedAt   DateTime  @default(now())
   returnedAt DateTime?
   user       User      @relation(fields: [userId], references: [id])
