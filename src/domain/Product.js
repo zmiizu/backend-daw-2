@@ -15,7 +15,7 @@ class Product {
 
     static create({ userId, movieId, movieTitle, dias}) {
         if (!userId || !movieId || !movieTitle) {
-            throw new Error("Missing rental data");
+            throw new Error("Faltan datos por rellenar");
         }
         return new Product({
             id: crypto.randomUUID(),
