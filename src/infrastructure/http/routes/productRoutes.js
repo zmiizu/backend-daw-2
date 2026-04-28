@@ -22,7 +22,7 @@ router.patch('/:id/return', authMiddleware, async (req, res) => {
 });
 
 router.get('/history', authMiddleware, async (req, res) => {
-  try { return res.json(await productRepo.findAllByUser(req.userId)); }
+  try { return res.json(await productRepo.findByUser(req.userId)); }
   catch (err) { return fail(err, res); }
 });
 
