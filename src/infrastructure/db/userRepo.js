@@ -8,6 +8,8 @@ module.exports = {
   findById:                (id)    => db.user.findUnique({ where: { id } }).then(r => r ? toUser(r) : null),
   findByEmail:             (email) => db.user.findUnique({ where: { email: email.toLowerCase().trim() } }).then(r => r ? toUser(r) : null),
   findByVerificationToken: (token) => db.user.findUnique({ where: { emailVerificationToken: token } }).then(r => r ? toUser(r) : null),
+  findAll:                 ()      => db.user.findMany().then(rows => rows.map(toUser)),
+  delete:                  (id)    => db.user.delete({where: { id } }),
 
   create: (user) => db.user.create({
     data: {

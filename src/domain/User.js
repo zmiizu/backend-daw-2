@@ -2,10 +2,11 @@
 const crypto = require('crypto');
 
 class User {
-  constructor({ id, firstName, lastName, dni, phone, address, cardNumber, email, passwordHash,
+  constructor({ id, role = 'USER', firstName, lastName, dni, phone, address, cardNumber, email, passwordHash,
     isEmailVerified = false, emailVerificationToken = null,
     emailVerificationTokenExpiresAt = null, createdAt = new Date(), updatedAt = new Date() }) {
     this.id = id;
+    this.role = role;
     this.firstName = firstName;
     this.lastName = lastName;
     this.dni = dni;
