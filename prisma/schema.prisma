@@ -7,6 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role{
+  USER
+  ADMIN
+}
 model User {
   id                              String    @id @default(uuid())
   firstName                       String
@@ -23,19 +27,29 @@ model User {
   createdAt                       DateTime  @default(now())
   updatedAt                       DateTime  @updatedAt
   products                        Product[]
-
+  role                            Role       @default(USER)
   @@map("users")
 }
 
 model Product {
   id         String    @id @default(uuid())
-  movieId    Int       
+  movieId    String       
   userId     String
   movieTitle String
   dias       Int
   rentedAt   DateTime  @default(now())
   returnedAt DateTime?
+  movie      Movie     @relation(fields: [movieId], references: [id])
   user       User      @relation(fields: [userId], references: [id])
 
   @@map("products")
+}
+
+model Movie {
+  id                String @id @default(uuid())
+  movieTitle        String
+  desc              String
+  year              Int?
+  product           Product[]
+  @@map("movie")
 }
