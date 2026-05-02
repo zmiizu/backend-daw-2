@@ -5,6 +5,7 @@ const listMovies = require('../../../application/use-cases/movie/listMovies');
 const updateMovie = require('../../../application/use-cases/movie/updateMovie');
 const authMiddleware = require('../authMiddleware');
 const adminMiddleware = require('../adminMiddleware');
+const deleteMovie = require('../../../application/use-cases/movie/deleteMovie');
 
 const fail = (err, res) => res.status(err.status || 500).json({ error: err.message });
 
@@ -34,6 +35,14 @@ router.get('/all-movies', async (req, res) => {
 router.put('/:id', authMiddleware, adminMiddleware, async (req, res) => {
     const { movieTitle, desc, year } = req.body ?? {};
     try { return res.status(200).json(await updateMovie({ id: req.params.id, movieTitle, desc, year })); }
+    catch (err) { return fail(err, res); }
+});
+
+router.delete('/:id', authMiddleware, adminMiddleware, async (req, res) =>{
+    const movieId = req.params.id;
+    if (!movieId)
+        return res.status(400).json({error: 'No has añadido el id de la pelicula'})
+    try{ return res.status(200).json(await deleteMovie({ movieId }));}
     catch (err) { return fail(err, res); }
 });
 

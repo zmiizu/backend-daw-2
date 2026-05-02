@@ -25,6 +25,12 @@ module.exports = {
         },
     }),
 
+    //eliminar pelicula
+    delete: (id) =>
+        db.movie.delete({
+            where: { id }
+        }),
+
     //modificar una pelicula
     update: (movie) => db.movie.update({
         where: { id: movie.id },
