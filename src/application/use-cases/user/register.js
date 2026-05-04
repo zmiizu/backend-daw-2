@@ -14,7 +14,8 @@ module.exports = async function register({ firstName, lastName, dni, phone, addr
 
   await userRepo.create(user);
   const url = `${appUrl}/api/user/verify-email?token=${user.emailVerificationToken}`;
-  await emailService.send(user.email, 'verifyEmail', { url });
+  emailService.send(user.email, 'verifyEmail', { url })
+    .catch(e => console.error('Error enviando email de verificación:', e.message));
 
   return { id: user.id, email: user.email };
 };

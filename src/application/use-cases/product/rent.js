@@ -28,9 +28,9 @@ module.exports = async function rent({ userId, movieTitle, dias, movieId }) {
     await productRepo.create(alquiler);
     const total = alquiler.dias * PRECIO_DIA;
     
-    //Se envia mail al usuario que se ha alquilado la pelicula
-    await emailService.send(user.email, 'rentConfirmation',
-        { movieTitle: alquiler.movieTitle, dias: alquiler.dias, total: total });
-    
+    emailService.send(user.email, 'rentConfirmation',
+        { movieTitle: alquiler.movieTitle, dias: alquiler.dias, total: total })
+        .catch(e => console.error('Error enviando email de alquiler:', e.message));
+
     return {alquiler, total};
 }
