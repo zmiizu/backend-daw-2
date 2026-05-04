@@ -30,4 +30,12 @@ router.get('/:id', authMiddleware, adminMiddleware, async (req, res) => {
     catch (err) { return fail(err, res); }
 });
 
+router.get('/:id/rentals', authMiddleware, adminMiddleware, async (req, res) => {
+    const userId = req.params.id
+    if (!userId)
+        return res.status(400).json({ error: 'No has añadido el id de usuario' })
+    try { return res.status(200).json(await getUserRentals({ userId })) }
+    catch (err) { return fail(err, res) }
+});
+
 module.exports = router;
