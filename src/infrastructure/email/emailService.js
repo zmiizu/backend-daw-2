@@ -4,7 +4,7 @@ const { smtp } = require('../../config');
 const transporter = nodemailer.createTransport({
   host: smtp.host,
   port: smtp.port,
-  secure: false,
+  secure: smtp.port === 465,
   auth: { user: smtp.user, pass: smtp.pass },
   connectionTimeout: 10000,
   greetingTimeout: 10000,
