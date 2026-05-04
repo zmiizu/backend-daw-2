@@ -37,7 +37,7 @@ router.get('/me', authMiddleware, async (req, res) => {
   try {
     const user = await userRepo.findById(req.userId);
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-    return res.json({ id: user.id, firstName: user.firstName, lastName: user.lastName, dni: user.dni, phone: user.phone, address: user.address, email: user.email, isEmailVerified: user.isEmailVerified });
+    return res.json({ id: user.id, firstName: user.firstName, lastName: user.lastName, dni: user.dni, phone: user.phone, address: user.address, email: user.email, isEmailVerified: user.isEmailVerified, role: user.role });
   } catch (err) { return fail(err, res); }
 });
 
