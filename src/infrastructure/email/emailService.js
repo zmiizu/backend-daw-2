@@ -12,6 +12,7 @@ module.exports = {
   send: async (to, templateName, data) => {
     const template = require(`./templates/${templateName}`);
     const { subject, html } = template(data);
-    await transporter.sendMail({ from: smtp.from, to, subject, html });
+    const info = await transporter.sendMail({ from: smtp.from, to, subject, html });
+    console.log('Email enviado:', info.messageId);
   },
 };
