@@ -38,11 +38,11 @@ router.put('/:id', authMiddleware, adminMiddleware, async (req, res) => {
     catch (err) { return fail(err, res); }
 });
 
-router.delete('/:id', authMiddleware, adminMiddleware, async (req, res) =>{
-    const movieId = req.params.id;
-    if (!movieId)
-        return res.status(400).json({error: 'No has añadido el id de la pelicula'})
-    try{ return res.status(200).json(await deleteMovie({ movieId }));}
+router.delete('/:id', authMiddleware, adminMiddleware, async (req, res) => {
+    const id = req.params.id;
+    if (!id)
+        return res.status(400).json({ error: 'No has añadido el id de la pelicula' });
+    try { return res.status(200).json(await deleteMovie({ id })); }  
     catch (err) { return fail(err, res); }
 });
 
