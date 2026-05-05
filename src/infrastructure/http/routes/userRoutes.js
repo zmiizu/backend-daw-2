@@ -3,7 +3,8 @@ const { Router } = require('express');
 const register    = require('../../../application/use-cases/user/register');
 const login       = require('../../../application/use-cases/user/login');
 const verifyEmail = require('../../../application/use-cases/user/verifyEmail');
-const updateUser  = require('../../../application/use-cases/user/updateUser');
+const updateUser      = require('../../../application/use-cases/user/updateUser');
+const changePassword  = require('../../../application/use-cases/user/changePassword');
 const userRepo       = require('../../db/userRepo');
 const authMiddleware = require('../authMiddleware');
 
@@ -44,6 +45,14 @@ router.get('/me', authMiddleware, async (req, res) => {
 router.patch('/me', authMiddleware, async (req, res) => {
   const { firstName, lastName, phone, address } = req.body ?? {};
   try { return res.json(await updateUser({ userId: req.userId, firstName, lastName, phone, address })); }
+  catch (err) { return fail(err, res); }
+});
+
+router.patch('/me/password', authMiddleware, async (req, res) => {
+  const { currentPassword, newPassword } = req.body ?? {};
+  if (!currentPassword || !newPassword)
+    return res.status(400).json({ error: 'Se requieren la contraseña actual y la nueva' });
+  try { return res.json(await changePassword({ userId: req.userId, currentPassword, newPassword })); }
   catch (err) { return fail(err, res); }
 });
 

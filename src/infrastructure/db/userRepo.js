@@ -41,4 +41,9 @@ module.exports = {
       updatedAt: user.updatedAt,
     },
   }),
+
+  updatePassword: (user) => db.user.update({
+    where: { id: user.id },
+    data: { passwordHash: user.passwordHash, updatedAt: user.updatedAt },
+  }),
 };
