@@ -7,11 +7,8 @@ module.exports = {
   port:         Number(process.env.PORT) || 3000,
   appUrl:       process.env.APP_URL || 'http://localhost:3000',
   jwtSecret:    process.env.JWT_ACCESS_SECRET,
-  smtp: {
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: Number(process.env.SMTP_PORT) || 587,
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+  resend: {
+    apiKey: process.env.RESEND_API_KEY,
     from: process.env.EMAIL_FROM,
   },
 };

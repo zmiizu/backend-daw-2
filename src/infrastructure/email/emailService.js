@@ -1,22 +1,20 @@
-const nodemailer = require('nodemailer');
-const { smtp } = require('../../config');
+const { Resend } = require('resend');
+const { resend: resendConfig } = require('../../config');
 
-const transporter = nodemailer.createTransport({
-  host: smtp.host,
-  port: smtp.port,
-  secure: smtp.port === 465,
-  auth: { user: smtp.user, pass: smtp.pass },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-});
+const resend = new Resend(resendConfig.apiKey);
 
 module.exports = {
   send: async (to, templateName, data) => {
     console.log('Intentando enviar email a:', to);
     const template = require(`./templates/${templateName}`);
     const { subject, html } = template(data);
-    const info = await transporter.sendMail({ from: smtp.from, to, subject, html });
-    console.log('Email enviado:', info.messageId);
+    const { data: info, error } = await resend.emails.send({
+      from: resendConfig.from,
+      to,
+      subject,
+      html,
+    });
+    if (error) throw new Error(`Resend error: ${error.message}`);
+    console.log('Email enviado:', info.id);
   },
 };
